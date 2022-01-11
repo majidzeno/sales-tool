@@ -1,0 +1,79 @@
+configs:
+  info:
+    apps: int
+    apps_upper_limit: int
+    team: int
+    team_upper_limit: int
+    interval:
+     - monthly
+     - annual
+  limits:
+    sessions: int
+    bugs: int
+    crashes_occurrences: int
+    surveys_responses: int
+  insights: bool
+  multiple_attachments: bool
+  crash_reporting: bool
+  rules: bool
+  data_retention_period: int
+  white_labeling: bool
+  report_categories: bool
+  surveys:
+    basic: bool
+    nps: bool
+    app_store: bool
+  announcements:
+    basic: bool
+    whats_new: bool
+    version_update: bool
+  feature_requests: bool
+  analytics:
+    issues: bool
+    users: bool
+  logs:
+    console: bool
+    ibg: bool
+    user_data: bool
+    network_log: bool
+    view_hierarchy: bool
+    user_events: bool
+    user_steps: bool
+    repro_steps: bool
+    sessions_profiler: bool
+  integrations:
+    bug_tracking: bool
+    notifications: bool
+    crm: bool
+    webhook: bool
+    advanced_bug_tracking: bool
+    premium_bug_tracking: bool
+  conversations:
+    in_app: bool
+    email: bool
+  sso: bool
+  apm: bool
+
+tooltips:
+  data_retention_period: in months
+
+super:
+  surveys:
+    type: bool
+    set:
+      - surveys.basic
+      - surveys.nps
+      - surveys.app_store
+      - announcements.basic
+      - announcements.whats_new
+      - announcements.version_update
+  apps_limit:
+    type: int
+    set:
+      - info.apps
+      - info.apps_upper_limit
+  team_limit:
+    type: int
+    set:
+      - info.team
+      - info.team_upper_limit

@@ -2,9 +2,6 @@
   margin: 1em
 }
 
-.msg-box{
-  white-space: pre-line;
-}
 .form-check-input[type=checkbox] {
   transform: scale(1.5);
   -ms-transform: scale(1.5); /* IE */
@@ -43,4 +40,8 @@
   position: sticky;
   top: 1em;
   align-self: flex-start;
+}
+
+.msg-p{
+  margin: 0
 }

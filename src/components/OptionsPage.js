@@ -61,10 +61,12 @@ class OptionsPage extends Component {
     const explain = explainObject(obj);
     if (explain.length)
       msgs.push({
-        content: `Intention:\n${explain.join('\n')}`,
+        title: 'Intention',
+        content: explain,
         variant: 'light'
       })
     msgs.push({
+      title: 'Output',
       content: JSON.stringify(obj),
       variant: 'light'
     })
@@ -76,10 +78,10 @@ class OptionsPage extends Component {
     return (
       <Container fluid="sm">
         <Row>
-          <Col>
+          <Col style={{width: "50%"}}>
             <OptionsList className="MainList" title="Overrides" layout={layout} state={state} onChange={this.onChange} />
           </Col>
-          <Col className="sticky-control">
+          <Col className="sticky-control"  style={{width: "50%"}}>
             <Messages msgs={high_msgs} />
 
             <div className="d-grid gap-2">

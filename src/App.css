@@ -1,0 +1,46 @@
+.App {
+  margin: 1em
+}
+
+.msg-box{
+  white-space: pre-line;
+}
+.form-check-input[type=checkbox] {
+  transform: scale(1.5);
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+}
+.form-check-input[type=checkbox]:indeterminate {
+  background-color: #fff;
+  border-color: rgb(0,0,0,0.25);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='%23777' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/></svg>");
+}
+
+.form-control, .form-select{
+  max-width: 10em;
+}
+.check-box-bg {
+  background-color: #fff;
+}
+
+.card{
+  flex-direction: row;
+}
+.card-header{
+  padding: 0.3rem 0.5rem;
+  border-bottom: inherit;
+  border-right: 1px solid rgba(0,0,0,.125);
+}
+
+.card-body{
+  padding: 0.5rem 0.5rem
+}
+
+.sticky-control{
+  position: -webkit-sticky;
+  position: sticky;
+  top: 1em;
+  align-self: flex-start;
+}

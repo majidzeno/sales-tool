@@ -1,34 +1,35 @@
+import { InputGroup, FormControl, Form, Card } from 'react-bootstrap';
 import TriCheckbox from './TriCheckbox';
-import { isObject } from '../helpers/helpers';
 
-const OptionsList = ({ layout, state, onChange }) => {
-  return (<ul>
-    {
-      Object.entries(layout || {}).map(([key, value]) => {
-        return <li key={key}>{
-          renderKeyValue(key, value, state[key], onChange)
-        }</li>;
-      })
-    }
-  </ul>);
+const NO_CHANGE_PLACEHOLDER = 'no change'
+
+const OptionsList = ({ layout, state, onChange, title, className }) => {
+  return (<Card className={className}>
+    <Card.Header>{title}</Card.Header>
+    <Card.Body>
+      {
+        Object.entries(layout || {})
+          .map(([key, value]) =>
+            renderKeyValue(key, value, state[key], onChange)
+          )
+      }
+    </Card.Body>
+  </Card>);
 }
 
 const renderObject = (key, value, state, onChange) => (
-  <div>
-    {key}
-    <OptionsList layout={value}
-      state={state}
-      onChange={(x) => onChange({ [key]: x })} />
-  </div>
+  <OptionsList key={key} title={key} layout={value}
+    state={state}
+    onChange={(x) => onChange({ [key]: x })} />
 )
 
 const renderArray = (key, value, state, onChange) => (
-  <div>
-    <label htmlFor={key}>{key}: </label>
-    <select id={key}
+  <InputGroup key={key} size="sm" className="mb-1">
+    <InputGroup.Text>{key}: </InputGroup.Text>
+    <Form.Select id={key}
       value={state}
-      onChange={e => onChange({ [key]: e.target.value === '_no_change' ? undefined : e.target.value })}>
-      <option value={'_no_change'}>-</option>
+      onChange={e => onChange({ [key]: e.target.value === '' ? undefined : e.target.value })}>
+      <option value={''}>{NO_CHANGE_PLACEHOLDER}</option>
       {
         value.map(key =>
           <option key={key} value={key}>
@@ -36,45 +37,56 @@ const renderArray = (key, value, state, onChange) => (
           </option>
         )
       }
-    </select>
-  </div>
+    </Form.Select>
+  </InputGroup>
 )
 
 const renderBool = (key, state, onChange) => (
-  <div>
-    <label htmlFor={key}>{key}: </label>
-    <TriCheckbox id={key} state={state} onChange={e => onChange({ [key]: e.target.state })} />
-  </div>
+  <InputGroup key={key} size="sm" className="mb-1">
+    <InputGroup.Text><label htmlFor={key}>{key}: </label></InputGroup.Text>
+    <InputGroup.Text bsPrefix="input-group-text check-box-bg">
+      <TriCheckbox id={key} state={state} onChange={e => onChange({ [key]: e.target.state })} />
+    </InputGroup.Text>
+  </InputGroup>
 )
 
-const renderInt = (key, state, onChange) => (
-  <div>
-    <label htmlFor={key}>{key}: </label>
-    <input key={key} id={key} value={state || ''} onChange={e => onChange({ [key]: e.target.value })} type="number" placeholder='-' />
-  </div>
+const renderInt = (key, value, state, onChange) => (
+  <InputGroup key={key} size="sm" className="mb-1">
+    <InputGroup.Text><label htmlFor={key}>{key}: </label></InputGroup.Text>
+    <FormControl key={key} id={key} value={state == undefined ? '' : state} onChange={e => onChange({ [key]: e.target.value === '' ? undefined : parseInt(e.target.value) })} type="number" min="-1" placeholder={NO_CHANGE_PLACEHOLDER} />
+    {value._UNIT && <InputGroup.Text>{value._UNIT}</InputGroup.Text>}
+  </InputGroup>
+  // <div>
+  //   <label htmlFor={key}>{key}: </label>
+  //   <input key={key} id={key} value={state || ''} onChange={e => onChange({[key]: e.target.value === '' ? undefined : parseInt(e.target.value)})} type="number" min="-1" placeholder={NO_CHANGE_PLACEHOLDER} />
+  //   {value._UNIT && <label>{value._UNIT}</label>}
+  // </div>
 )
 
-const renderString = (key, state, onChange) => (
-  <div>
-    <label htmlFor={key}>{key}: </label>
-    <input key={key} id={key} value={state || ''} onChange={e => onChange({ [key]: e.target.value })} />
-  </div>
+const renderString = (key, value, state, onChange) => (
+  <InputGroup key={key} size="sm" className="mb-1">
+    <InputGroup.Text><label htmlFor={key}>{key}: </label></InputGroup.Text>
+    <FormControl key={key} id={key} value={state || ''} onChange={e => onChange({ [key]: e.target.value === '' ? undefined : parseInt(e.target.value) })} placeholder={NO_CHANGE_PLACEHOLDER} />
+    {value._UNIT && <InputGroup.Text>{value._UNIT}</InputGroup.Text>}
+  </InputGroup>
 )
 
 const renderKeyValue = (key, value, state, onChange) => {
-  if (isObject(value)) {
-    return renderObject(key, value, state, onChange)
-  } else if (Array.isArray(value)) {
-    return renderArray(key, value, state, onChange);
-  } else if (typeof value === 'string') {
-    switch (value) {
+  if ('_TYPE' in value) {
+    const type = value._TYPE
+    switch (type) {
+      case 'array':
+        return renderArray(key, value._OPTIONS, state, onChange);
       case 'bool':
         return renderBool(key, state, onChange)
       case 'int':
-        return renderInt(key, state, onChange)
+        return renderInt(key, value, state, onChange)
       case 'string':
-        return renderString(key, state, onChange)
+        return renderString(key, value, state, onChange)
     }
+  }
+  else {
+    return renderObject(key, value, state, onChange)
   }
 }
 

@@ -1,79 +1,107 @@
 configs:
   info:
-    apps: int
-    apps_upper_limit: int
-    team: int
-    team_upper_limit: int
+    apps:
+      _TYPE: int
+    apps_upper_limit:
+      _TYPE: int
+    team:
+      _TYPE: int
+    team_upper_limit:
+      _TYPE: int
     interval:
-     - monthly
-     - annual
+      _TYPE: array
+      _OPTIONS:
+        - monthly
+        - annual
   limits:
-    sessions: int
-    bugs: int
-    crashes_occurrences: int
-    surveys_responses: int
-  insights: bool
-  multiple_attachments: bool
-  crash_reporting: bool
-  rules: bool
-  data_retention_period: int
-  white_labeling: bool
-  report_categories: bool
+    sessions:
+      _TYPE: int
+    bugs:
+      _TYPE: int
+    crashes_occurrences:
+      _TYPE: int
+    surveys_responses:
+      _TYPE: int
+  insights:
+    _TYPE: bool
+  multiple_attachments:
+    _TYPE: bool
+  crash_reporting:
+    _TYPE: bool
+  rules:
+    _TYPE: bool
+  data_retention_period:
+    _TYPE: int
+    _UNIT: months
+  white_labeling:
+    _TYPE: bool
+  report_categories:
+    _TYPE: bool
   surveys:
-    basic: bool
-    nps: bool
-    app_store: bool
+    basic:
+      _TYPE: bool
+    nps:
+      _TYPE: bool
+    app_store:
+      _TYPE: bool
   announcements:
-    basic: bool
-    whats_new: bool
-    version_update: bool
-  feature_requests: bool
+    basic:
+      _TYPE: bool
+    whats_new:
+      _TYPE: bool
+    version_update:
+      _TYPE: bool
+  feature_requests:
+    _TYPE: bool
   analytics:
-    issues: bool
-    users: bool
+    issues:
+      _TYPE: bool
+    users:
+      _TYPE: bool
   logs:
-    console: bool
-    ibg: bool
-    user_data: bool
-    network_log: bool
-    view_hierarchy: bool
-    user_events: bool
-    user_steps: bool
-    repro_steps: bool
-    sessions_profiler: bool
+    console:
+      _TYPE: bool
+    ibg:
+      _TYPE: bool
+    user_data:
+      _TYPE: bool
+    network_log:
+      _TYPE: bool
+    view_hierarchy:
+      _TYPE: bool
+    user_events:
+      _TYPE: bool
+    user_steps:
+      _TYPE: bool
+    repro_steps:
+      _TYPE: bool
+    sessions_profiler:
+      _TYPE: bool
   integrations:
-    bug_tracking: bool
-    notifications: bool
-    crm: bool
-    webhook: bool
-    advanced_bug_tracking: bool
-    premium_bug_tracking: bool
+    bug_tracking:
+      _TYPE: bool
+    notifications:
+      _TYPE: bool
+    crm:
+      _TYPE: bool
+    webhook:
+      _TYPE: bool
+    advanced_bug_tracking:
+      _TYPE: bool
+    premium_bug_tracking:
+      _TYPE: bool
   conversations:
-    in_app: bool
-    email: bool
-  sso: bool
-  apm: bool
+    in_app:
+      _TYPE: bool
+    email:
+      _TYPE: bool
+  sso:
+    _TYPE: bool
+  apm:
+    _TYPE: bool
 
-tooltips:
-  data_retention_period: in months
-
-super:
-  surveys:
-    type: bool
-    set:
-      - surveys.basic
-      - surveys.nps
-      - surveys.app_store
-      - announcements.basic
-      - announcements.whats_new
-      - announcements.version_update
-  apps_limit:
-    type: int
-    set:
-      - info.apps
-      - info.apps_upper_limit
-  team_limit:
-    type: int
-    set:
-      - info.team
-      - info.team_upper_limit
+warns:
+  group_warns:
+    - [info.apps, info.apps_upper_limit]
+    - [info.team, info.team_upper_limit]
+    - [surveys.basic, surveys.nps, surveys.app_store, announcements.basic, announcements.whats_new, announcements.version_update]

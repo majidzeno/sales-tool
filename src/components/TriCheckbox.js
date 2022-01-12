@@ -1,4 +1,5 @@
 import { useCallback } from "react"
+import { Form } from "react-bootstrap";
 
 const TriCheckbox = ({state, onChange, reversed, ...props}) => {
   const _myref = useCallback(obj => {
@@ -21,7 +22,7 @@ const TriCheckbox = ({state, onChange, reversed, ...props}) => {
     e.target.state = _unstateMap[(_stateMap[state] + add)%3];
     onChange(e);
   }
-  return <input type="checkbox"
+  return <Form.Check type="checkbox"
                 checked={state === true}
                 ref={_myref}
                 onChange={_onChange}

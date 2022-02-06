@@ -45,3 +45,8 @@
 .msg-p{
   margin: 0
 }
+
+.output-area{
+  max-width: 100%;
+  height: 300px;
+}

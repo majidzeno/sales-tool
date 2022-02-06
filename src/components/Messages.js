@@ -1,4 +1,4 @@
-import { Alert } from "react-bootstrap";
+import { Alert, Form } from "react-bootstrap";
 
 const Messages = ({ msgs }) => {
   return (<div>
@@ -7,9 +7,7 @@ const Messages = ({ msgs }) => {
         return <Alert variant={msg.variant} key={i}>
           {msg.title && <b>{msg.title}: </b>}
           {
-            Array.isArray(msg.content) ?
-              msg.content.map(c => <p className="msg-p">{c}</p>) :
-              <p className="msg-p">{msg.content}</p>
+            msg.textarea ? <Form.Control className="output-area" as="textarea" value={msg.content} readOnly/> : <div> {renderMsg(msg)} </div>
           }
         </Alert>
       })
@@ -17,4 +15,9 @@ const Messages = ({ msgs }) => {
   </div>)
 }
 
+const renderMsg = (msg) => (
+  Array.isArray(msg.content) ?
+              msg.content.map(c => <p className="msg-p">{c}</p>) :
+              <p className="msg-p">{msg.content}</p>
+)
 export default Messages;

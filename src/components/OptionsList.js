@@ -24,8 +24,8 @@ const renderObject = (key, value, state, onChange) => (
 )
 
 const renderArray = (key, value, state, onChange) => (
-  <InputGroup key={key} size="sm" className="mb-1">
-    <InputGroup.Text>{key}: </InputGroup.Text>
+  <InputGroup title={value._TOOLTIP} key={key} size="sm" className="mb-1">
+    <InputGroup.Text><label htmlFor={key}>{key}:</label></InputGroup.Text>
     <Form.Select id={key}
       value={state}
       onChange={e => onChange({ [key]: e.target.value === '' ? undefined : e.target.value })}>
@@ -41,8 +41,8 @@ const renderArray = (key, value, state, onChange) => (
   </InputGroup>
 )
 
-const renderBool = (key, state, onChange) => (
-  <InputGroup key={key} size="sm" className="mb-1">
+const renderBool = (key, value, state, onChange) => (
+  <InputGroup title={value._TOOLTIP} key={key} size="sm" className="mb-1">
     <InputGroup.Text><label htmlFor={key}>{key}: </label></InputGroup.Text>
     <InputGroup.Text bsPrefix="input-group-text check-box-bg">
       <TriCheckbox id={key} state={state} onChange={e => onChange({ [key]: e.target.state })} />
@@ -51,9 +51,9 @@ const renderBool = (key, state, onChange) => (
 )
 
 const renderInt = (key, value, state, onChange) => (
-  <InputGroup key={key} size="sm" className="mb-1">
+  <InputGroup title={value._TOOLTIP} key={key} size="sm" className="mb-1">
     <InputGroup.Text><label htmlFor={key}>{key}: </label></InputGroup.Text>
-    <FormControl key={key} id={key} value={state == undefined ? '' : state} onChange={e => onChange({ [key]: e.target.value === '' ? undefined : parseInt(e.target.value) })} type="number" min="-1" placeholder={NO_CHANGE_PLACEHOLDER} />
+    <FormControl key={key} id={key} value={state === undefined ? '' : state} onChange={e => onChange({ [key]: e.target.value === '' ? undefined : parseInt(e.target.value) })} type="number" min="-1" placeholder={NO_CHANGE_PLACEHOLDER} />
     {value._UNIT && <InputGroup.Text>{value._UNIT}</InputGroup.Text>}
   </InputGroup>
   // <div>
@@ -64,7 +64,7 @@ const renderInt = (key, value, state, onChange) => (
 )
 
 const renderString = (key, value, state, onChange) => (
-  <InputGroup key={key} size="sm" className="mb-1">
+  <InputGroup title={value._TOOLTIP} key={key} size="sm" className="mb-1">
     <InputGroup.Text><label htmlFor={key}>{key}: </label></InputGroup.Text>
     <FormControl key={key} id={key} value={state || ''} onChange={e => onChange({ [key]: e.target.value === '' ? undefined : parseInt(e.target.value) })} placeholder={NO_CHANGE_PLACEHOLDER} />
     {value._UNIT && <InputGroup.Text>{value._UNIT}</InputGroup.Text>}
@@ -73,16 +73,20 @@ const renderString = (key, value, state, onChange) => (
 
 const renderKeyValue = (key, value, state, onChange) => {
   if ('_TYPE' in value) {
+    if (value._HIDDEN) return null;
+
     const type = value._TYPE
     switch (type) {
       case 'array':
         return renderArray(key, value._OPTIONS, state, onChange);
       case 'bool':
-        return renderBool(key, state, onChange)
+        return renderBool(key, value, state, onChange)
       case 'int':
         return renderInt(key, value, state, onChange)
       case 'string':
         return renderString(key, value, state, onChange)
+      default:
+          return null;
     }
   }
   else {

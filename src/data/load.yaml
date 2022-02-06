@@ -2,12 +2,16 @@ configs:
   info:
     apps:
       _TYPE: int
+      _TOOLTIP: Number of applications per plan
     apps_upper_limit:
       _TYPE: int
+      _TOOLTIP: Max number of applications per plan
     team:
       _TYPE: int
+      _TOOLTIP: Number of team members per plan
     team_upper_limit:
       _TYPE: int
+      _TOOLTIP: Max number of members per plan
     interval:
       _TYPE: array
       _OPTIONS:
@@ -61,8 +65,10 @@ configs:
   logs:
     console:
       _TYPE: bool
+      _TOOLTIP: Console logs
     ibg:
       _TYPE: bool
+      _TOOLTIP: Instabug logs
     user_data:
       _TYPE: bool
     network_log:
@@ -80,16 +86,34 @@ configs:
   integrations:
     bug_tracking:
       _TYPE: bool
-    notifications:
-      _TYPE: bool
-    crm:
-      _TYPE: bool
-    webhook:
-      _TYPE: bool
+      _TOOLTIP: Asana, BaseCamp, Clubhouse, Codebase, Github, Gitlab, Teamwork, Trello, Sprintly, Pivotal, Manuscript
     advanced_bug_tracking:
       _TYPE: bool
+      _TOOLTIP: Jira connect, Jira, OpsGenie
     premium_bug_tracking:
       _TYPE: bool
+      _TOOLTIP: Jira server, PhabricatorApp
+    notifications:
+      _TYPE: bool
+      _TOOLTIP: Chatwork, Slack, Hipchat
+    crm:
+      _TYPE: bool
+      _TOOLTIP: Desk, Freshdesk, Zendesk, Jira service desk, Frontapp
+    webhook:
+      _TYPE: bool
+      _TOOLTIP: Webhooks, Zapier
+    free_integrations:
+      _TYPE: bool
+      _TOOLTIP: Slack
+      _HIDDEN: true
+    paid_integrations:
+      _TYPE: bool
+      _TOOLTIP: Asana, BaseCamp, Clubhouse, codebase, Github, Gitlab, teamwork, Trello, Sprintly, Pivotal, manuscript, Zapier, Zendesk, Jira, Connect, ... etc
+      _HIDDEN: true
+    premium_integrations:
+      _TYPE: bool
+      _TOOLTIP: OpsGenie, Phabricator, Jira Server
+      _HIDDEN: true
   conversations:
     in_app:
       _TYPE: bool
@@ -105,3 +129,6 @@ warns:
     - [info.apps, info.apps_upper_limit]
     - [info.team, info.team_upper_limit]
     - [surveys.basic, surveys.nps, surveys.app_store, announcements.basic, announcements.whats_new, announcements.version_update]
+  usage_warns:
+    - _OPTIONS: [integrations.free_integrations, integrations.paid_integrations, integrations.premium_integrations]
+      _MESSAGE: "The free/paid/premium options should only be used for plans after iteration 10."

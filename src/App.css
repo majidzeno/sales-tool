@@ -1,5 +1,27 @@
-.App {
-  margin: 1em
+body {
+  margin: 1em;
+}
+
+.container {
+  padding: 0
+}
+
+#root, html, body, .full {
+  height: 99.2%;
+  overflow: hidden;
+}
+
+.col-left, .col-right {
+  width: 50%;
+  height: 100%;
+  overflow-y: scroll;
+}
+.col-left {
+  float: left;
+}
+.col-right {
+  float: right;
+  overflow-y: auto;
 }
 
 .form-check-input[type=checkbox] {
@@ -33,13 +55,6 @@
 
 .card-body{
   padding: 0.5rem 0.5rem
-}
-
-.sticky-control{
-  position: -webkit-sticky;
-  position: sticky;
-  top: 1em;
-  align-self: flex-start;
 }
 
 .msg-p{

@@ -4,7 +4,7 @@ import OptionsPage from './components/OptionsPage.js';
 
 function App() {
   return (
-    <div className="App">
+    <div className="full">
       <OptionsPage></OptionsPage>
     </div>
   );

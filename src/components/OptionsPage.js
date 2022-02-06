@@ -36,14 +36,14 @@ class OptionsPage extends Component {
   }
 
   clearAll = () => {
-    this.setState(({layout}) => ({ msgs: [], high_msgs: [], state: this.initialState(layout) }));
+    this.setState(({ layout }) => ({ msgs: [], high_msgs: [], state: this.initialState(layout) }));
   }
 
   onClick = () => {
     const obj = removeUndefined(this.state.state);
     const { group_warns, usage_warns } = this.state.warns;
     let high_msgs = []
-    if (!Object.keys(obj).length){
+    if (!Object.keys(obj).length) {
       high_msgs.push({
         content: 'Your request does not have any changes!',
         variant: 'danger'
@@ -96,19 +96,19 @@ class OptionsPage extends Component {
   render() {
     const { layout, state, high_msgs, msgs } = this.state;
     return (
-      <Container fluid="sm">
-        <Row>
-          <Col style={{width: "50%"}}>
+      <Container className="full" fluid="sm">
+        <Row className='full'>
+          <Col className='col-left'>
             <OptionsList className="MainList" title="Overrides" layout={layout} state={state} onChange={this.onChange} />
           </Col>
-          <Col className="sticky-control"  style={{width: "50%"}}>
+          <Col className='col-right'>
             <Messages msgs={high_msgs} />
 
             <div className="d-grid gap-2">
               <Button size="lg" variant="primary" onClick={this.onClick}>Generate Command</Button>
             </div>
             <Messages msgs={msgs} />
-            <br/>
+            <br />
             <div className="d-grid gap-2">
               <Button size="sm" variant="secondary" onClick={this.clearAll}>Clear All</Button>
             </div>

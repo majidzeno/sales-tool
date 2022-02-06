@@ -35,9 +35,13 @@ class OptionsPage extends Component {
     //console.log(mergeDeep(this.state.state, changes));
   }
 
+  clearAll = () => {
+    this.setState(({layout}) => ({ msgs: [], high_msgs: [], state: this.initialState(layout) }));
+  }
+
   onClick = () => {
     const obj = removeUndefined(this.state.state);
-    const { group_warns } = this.state.warns;
+    const { group_warns, usage_warns } = this.state.warns;
     let high_msgs = []
     if (!Object.keys(obj).length){
       high_msgs.push({
@@ -45,6 +49,20 @@ class OptionsPage extends Component {
         variant: 'danger'
       });
     }
+
+    usage_warns.forEach(group => {
+      const options = group._OPTIONS
+      const message = group._MESSAGE
+
+      const matches = options.map(path => dig(obj, ...path.split('.')) !== undefined)
+      const any = matches.some(v => v)
+      if (any) {
+        high_msgs.push({
+          content: message,
+          variant: 'warning'
+        })
+      }
+    })
 
     group_warns.forEach(group => {
       const matches = group.map(path => dig(obj, ...path.split('.')) !== undefined)
@@ -57,6 +75,7 @@ class OptionsPage extends Component {
         })
       }
     })
+
     let msgs = []
     const explain = explainObject(obj);
     if (explain.length)
@@ -88,6 +107,10 @@ class OptionsPage extends Component {
               <Button size="lg" variant="primary" onClick={this.onClick}>Generate Command</Button>
             </div>
             <Messages msgs={msgs} />
+            <br/>
+            <div className="d-grid gap-2">
+              <Button size="sm" variant="secondary" onClick={this.clearAll}>Clear All</Button>
+            </div>
           </Col>
         </Row>
       </Container>

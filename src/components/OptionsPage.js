@@ -87,7 +87,8 @@ class OptionsPage extends Component {
     msgs.push({
       title: 'Output',
       content: JSON.stringify(obj),
-      variant: 'light'
+      variant: 'light',
+      textarea: true
     })
     this.setState({ msgs, high_msgs });
   }

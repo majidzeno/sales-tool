@@ -4,7 +4,7 @@ import YAML from '../helpers/yaml-0.4';
 import OptionsList from './OptionsList';
 import Messages from './Messages';
 import { explainObject, dig, mergeDeep, removeUndefined } from '../helpers/helpers';
-import { Button, Container, Col, Row } from 'react-bootstrap';
+import { Button, Container, Col, Row, InputGroup, FormControl } from 'react-bootstrap';
 class OptionsPage extends Component {
   state = {
     layout: {},
@@ -12,6 +12,10 @@ class OptionsPage extends Component {
     state: {},
     msgs: [],
     high_msgs: [],
+    values: {
+      company_id: '',
+      jira_ticket: ''
+    }
   }
 
   initialState(layout) {
@@ -35,8 +39,26 @@ class OptionsPage extends Component {
     //console.log(mergeDeep(this.state.state, changes));
   }
 
+  onCompanyIdChange = (value) => {
+    value = value.replace(/[^\d]/g, '');
+    this.setState(({ values }) => ({values: {...values, company_id: value}}))
+  }
+
+  onJiraTicketChange = (value) => {
+    value = value.replace(/\s/g, '');
+    this.setState(({ values }) => ({values: {...values, jira_ticket: value}}))
+  }
+
   clearAll = () => {
-    this.setState(({ layout }) => ({ msgs: [], high_msgs: [], state: this.initialState(layout) }));
+    this.setState(({ layout }) => ({
+      msgs: [],
+      high_msgs: [],
+      state: this.initialState(layout),
+      values: {
+        company_id: '',
+        jira_ticket: ''
+      }
+    }));
   }
 
   onClick = () => {
@@ -48,6 +70,25 @@ class OptionsPage extends Component {
         content: 'Your request does not have any changes!',
         variant: 'danger'
       });
+    }
+
+    const { company_id, jira_ticket } = this.state.values;
+    let legacy_output = false;
+
+    if (company_id === '' && jira_ticket === ''){
+      high_msgs.push({
+        content: "You didn't provide a company id nor a jira_ticket, outputting just the overrides.",
+        variant: 'warning'
+      })
+
+      legacy_output = true;
+    } else if (company_id === '' || jira_ticket === '') {
+      const missing = company_id === '' ? 'company_id' : 'jira_ticket'
+
+      high_msgs.push({
+        content: `You didn't provide a ${missing}.`,
+        variant: 'danger'
+      })
     }
 
     usage_warns.forEach(group => {
@@ -84,9 +125,14 @@ class OptionsPage extends Component {
         content: explain,
         variant: 'light'
       })
+
+    const overrides = JSON.stringify(obj).replace(/"([^"]+)":/g, '$1:');
+
+    const output = legacy_output ? overrides : `add_company_overrides ${company_id} ${overrides} ${jira_ticket}`
+
     msgs.push({
       title: 'Output',
-      content: JSON.stringify(obj),
+      content: output,
       variant: 'light',
       textarea: true
     })
@@ -94,7 +140,7 @@ class OptionsPage extends Component {
   }
 
   render() {
-    const { layout, state, high_msgs, msgs } = this.state;
+    const { layout, state, high_msgs, msgs, values } = this.state;
     return (
       <Container className="full" fluid="sm">
         <Row className='full'>
@@ -103,6 +149,28 @@ class OptionsPage extends Component {
           </Col>
           <Col className='col-right'>
             <Messages msgs={high_msgs} />
+
+            <InputGroup className="mb-1">
+              <InputGroup.Text><label htmlFor='company_id'>Company Id: </label></InputGroup.Text>
+              <FormControl
+                value={values.company_id}
+                onChange={e => this.onCompanyIdChange(e.target.value)}
+                id='company_id'
+                placeholder="company_id"
+                className="stretched-input"
+              />
+            </InputGroup>
+
+            <InputGroup className="mb-1">
+              <InputGroup.Text><label htmlFor='jira_ticket'>Jira Ticket: </label></InputGroup.Text>
+              <FormControl
+                value={values.jira_ticket}
+                onChange={e => this.onJiraTicketChange(e.target.value)}
+                id='jira_ticket'
+                placeholder="jira_ticket"
+                className="stretched-input"
+              />
+            </InputGroup>
 
             <div className="d-grid gap-2">
               <Button size="lg" variant="primary" onClick={this.onClick}>Generate Command</Button>

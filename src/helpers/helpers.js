@@ -48,7 +48,7 @@ export const explainObject = (obj, prefix = "") => {
       explain.push(...explainObject(val, `${prefix}${key}`));
     }else{
       if(typeof val === 'boolean')
-        explain.push(`${val?'Enable':'Disable'} "${prefix}${key}"`);
+        explain.push(`Force "${prefix}${key}" to be ${val?'enabled':'disabled'}.`)
       else
         explain.push(`Set "${prefix}${key}" to ${val}`);
     }

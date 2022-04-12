@@ -1,7 +1,8 @@
-import { InputGroup, FormControl, Form, Card } from 'react-bootstrap';
-import TriCheckbox from './TriCheckbox';
-
-const NO_CHANGE_PLACEHOLDER = 'no change'
+import { Card } from 'react-bootstrap';
+import ArrayOption from './options/ArrayOption';
+import BoolOption from './options/BoolOption';
+import IntOption from './options/IntOption';
+import StringOption from './options/StringOption';
 
 const OptionsList = ({ layout, state, onChange, title, className }) => {
   return (<Card className={className}>
@@ -18,80 +19,40 @@ const OptionsList = ({ layout, state, onChange, title, className }) => {
 }
 
 const renderObject = (key, value, state, onChange) => (
-  <OptionsList key={key} title={key} layout={value}
+  <OptionsList
+    key={key}
+    title={key}
+    layout={value}
     state={state}
-    onChange={(x) => onChange({ [key]: x })} />
+    onChange={(x) => onChange({ [key]: x })}
+  />
 )
 
-const renderArray = (key, value, state, onChange) => (
-  <InputGroup title={value._TOOLTIP} key={key} size="sm" className="mb-1">
-    <InputGroup.Text><label htmlFor={key}>{key}:</label></InputGroup.Text>
-    <Form.Select id={key}
-      value={state}
-      onChange={e => onChange({ [key]: e.target.value === '' ? undefined : e.target.value })}>
-      <option value={''}>{NO_CHANGE_PLACEHOLDER}</option>
-      {
-        value.map(key =>
-          <option key={key} value={key}>
-            {key}
-          </option>
-        )
-      }
-    </Form.Select>
-  </InputGroup>
-)
-
-const renderBool = (key, value, state, onChange) => (
-  <InputGroup title={value._TOOLTIP} key={key} size="sm" className="mb-1">
-    <InputGroup.Text><label htmlFor={key}>{key}: </label></InputGroup.Text>
-    <InputGroup.Text bsPrefix="input-group-text check-box-bg">
-      <TriCheckbox id={key} state={state} onChange={e => onChange({ [key]: e.target.state })} />
-    </InputGroup.Text>
-  </InputGroup>
-)
-
-const renderInt = (key, value, state, onChange) => (
-  <InputGroup title={value._TOOLTIP} key={key} size="sm" className="mb-1">
-    <InputGroup.Text><label htmlFor={key}>{key}: </label></InputGroup.Text>
-    <FormControl key={key} id={key} value={state === undefined ? '' : state} onChange={e => onChange({ [key]: e.target.value === '' ? undefined : parseInt(e.target.value) })} type="number" min="-1" placeholder={NO_CHANGE_PLACEHOLDER} />
-    {value._UNIT && <InputGroup.Text>{value._UNIT}</InputGroup.Text>}
-  </InputGroup>
-  // <div>
-  //   <label htmlFor={key}>{key}: </label>
-  //   <input key={key} id={key} value={state || ''} onChange={e => onChange({[key]: e.target.value === '' ? undefined : parseInt(e.target.value)})} type="number" min="-1" placeholder={NO_CHANGE_PLACEHOLDER} />
-  //   {value._UNIT && <label>{value._UNIT}</label>}
-  // </div>
-)
-
-const renderString = (key, value, state, onChange) => (
-  <InputGroup title={value._TOOLTIP} key={key} size="sm" className="mb-1">
-    <InputGroup.Text><label htmlFor={key}>{key}: </label></InputGroup.Text>
-    <FormControl key={key} id={key} value={state || ''} onChange={e => onChange({ [key]: e.target.value === '' ? undefined : parseInt(e.target.value) })} placeholder={NO_CHANGE_PLACEHOLDER} />
-    {value._UNIT && <InputGroup.Text>{value._UNIT}</InputGroup.Text>}
-  </InputGroup>
-)
+const renderer = {
+  'array': ArrayOption,
+  'int': IntOption,
+  'bool': BoolOption,
+  'string': StringOption
+}
 
 const renderKeyValue = (key, value, state, onChange) => {
-  if ('_TYPE' in value) {
-    if (value._HIDDEN) return null;
+  if ('_TYPE' in value === false)
+    return renderObject(key, value, state, onChange);
 
-    const type = value._TYPE
-    switch (type) {
-      case 'array':
-        return renderArray(key, value._OPTIONS, state, onChange);
-      case 'bool':
-        return renderBool(key, value, state, onChange)
-      case 'int':
-        return renderInt(key, value, state, onChange)
-      case 'string':
-        return renderString(key, value, state, onChange)
-      default:
-          return null;
-    }
-  }
-  else {
-    return renderObject(key, value, state, onChange)
-  }
+  if (value._HIDDEN) return null;
+
+  const Render = renderer[value._TYPE]
+
+  if (Render === null)
+    return null;
+
+  return <Render
+    key={key}
+    label={key}
+    value={value}
+    state={state}
+    onChange={onChange}
+  />
 }
 
 export default OptionsList;

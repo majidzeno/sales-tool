@@ -18,9 +18,9 @@ class OptionsPage extends Component {
     }
   }
 
-  initialState(layout) {
+  initialState(layout, enabled = true) {
     return Object.entries(layout).reduce((obj, [key, value]) => {
-      obj[key] = ('_TYPE' in value) ? undefined : this.initialState(value);
+      obj[key] = ('_TYPE' in value) ? { _ENABLED: enabled, _VALUE: undefined } : this.initialState(value, enabled);
       return obj;
     }, {});
   }
@@ -41,12 +41,12 @@ class OptionsPage extends Component {
 
   onCompanyIdChange = (value) => {
     value = value.replace(/[^\d]/g, '');
-    this.setState(({ values }) => ({values: {...values, company_id: value}}))
+    this.setState(({ values }) => ({ values: { ...values, company_id: value } }))
   }
 
   onJiraTicketChange = (value) => {
     value = value.replace(/\s/g, '');
-    this.setState(({ values }) => ({values: {...values, jira_ticket: value}}))
+    this.setState(({ values }) => ({ values: { ...values, jira_ticket: value } }))
   }
 
   clearAll = () => {
@@ -58,6 +58,14 @@ class OptionsPage extends Component {
         company_id: '',
         jira_ticket: ''
       }
+    }));
+  }
+
+  removeOverrides = () => {
+    this.setState(({ layout }) => ({
+      msgs: [],
+      high_msgs: [],
+      state: this.initialState(layout, false),
     }));
   }
 
@@ -75,7 +83,7 @@ class OptionsPage extends Component {
     const { company_id, jira_ticket } = this.state.values;
     let legacy_output = false;
 
-    if (company_id === '' && jira_ticket === ''){
+    if (company_id === '' && jira_ticket === '') {
       high_msgs.push({
         content: "You didn't provide a company id nor a jira_ticket, outputting just the overrides.",
         variant: 'warning'
@@ -95,7 +103,11 @@ class OptionsPage extends Component {
       const options = group._OPTIONS
       const message = group._MESSAGE
 
-      const matches = options.map(path => dig(obj, ...path.split('.')) !== undefined)
+      const matches = options.map(path => {
+        const value = dig(obj, ...path.split('.'))
+        return value !== undefined && value !== null;
+      });
+
       const any = matches.some(v => v)
       if (any) {
         high_msgs.push({
@@ -180,6 +192,14 @@ class OptionsPage extends Component {
             <div className="d-grid gap-2">
               <Button size="sm" variant="secondary" onClick={this.clearAll}>Clear All</Button>
             </div>
+            {
+              /*
+              <div className="d-grid gap-2">
+                <Button size="sm" variant="warning" onClick={this.removeOverrides}>Remove all overrides</Button>
+              </div>
+              */
+            }
+
           </Col>
         </Row>
       </Container>

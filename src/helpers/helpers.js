@@ -23,12 +23,15 @@ export const mergeDeep = (target, ...sources) => {
 export const removeUndefined = (obj) => {
   let newObj = {};
   Object.keys(obj).forEach((key) => {
-    if (isObject(obj[key])){
+    if (!('_VALUE' in obj[key])) {
       const cleaned = removeUndefined(obj[key]);
       if (Object.keys(cleaned).length)
         newObj[key] = cleaned;
     }
-    else if (obj[key] !== undefined) newObj[key] = obj[key];
+    else if (!obj[key]._ENABLED)
+      newObj[key] = null;
+    else if (obj[key]._VALUE !== undefined)
+      newObj[key] = obj[key]._VALUE;
   });
   return newObj;
 };
@@ -41,17 +44,21 @@ export const dig = (obj, ...path) => {
 }
 
 export const explainObject = (obj, prefix = "") => {
-  if (prefix.length) prefix = prefix+'.'
+  if (prefix.length) prefix = prefix + '.'
   let explain = []
   Object.entries(obj).forEach(([key, val]) => {
-    if (isObject(val)){
+    if (isObject(val)) {
       explain.push(...explainObject(val, `${prefix}${key}`));
-    }else{
-      if(typeof val === 'boolean')
-        explain.push(`Force "${prefix}${key}" to be ${val?'enabled':'disabled'}.`)
+    } else {
+      if (val === null)
+        explain.push(`Remove override for "${prefix}${key}".`)
+      else if (typeof val === 'boolean')
+        explain.push(`Force "${prefix}${key}" to be ${val ? 'enabled' : 'disabled'}  regardless of plan.`)
       else
-        explain.push(`Set "${prefix}${key}" to ${val}`);
+        explain.push(`Force "${prefix}${key}" to be ${val} regardless of plan.`);
     }
   });
   return explain;
 }
+
+export const NO_CHANGE_PLACEHOLDER = 'no change'

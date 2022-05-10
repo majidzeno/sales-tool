@@ -60,8 +60,6 @@ configs:
   analytics:
     issues:
       _TYPE: bool
-    users:
-      _TYPE: bool
   logs:
     console:
       _TYPE: bool

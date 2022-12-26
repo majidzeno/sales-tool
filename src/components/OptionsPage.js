@@ -228,7 +228,7 @@ class OptionsPage extends Component {
 		const { high_msgs, msgs, values } = this.state;
 		const commandCode = msgs[1]?.content;
 		return (
-			<Container className='full' fluid='sm'>
+			<Container className='full'>
 				<Form.Switch
 					checked={this.state.dash10}
 					onChange={this.togglePlan}

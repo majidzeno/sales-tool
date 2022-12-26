@@ -41,9 +41,19 @@ configs:
     _TYPE: bool
   rules:
     _TYPE: bool
-  data_retention_period:
-    _TYPE: int
-    _UNIT: months
+  data_retention:
+    bugs:
+      _TYPE: int
+      _UNIT: days
+    crashes:
+      _TYPE: int
+      _UNIT: days
+    apm:
+      _TYPE: int
+      _UNIT: days
+    sessions:
+      _TYPE: int
+      _UNIT: days
   white_labeling:
     _TYPE: bool
   report_categories:

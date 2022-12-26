@@ -99,36 +99,12 @@ configs:
     sessions_profiler:
       _TYPE: bool
   integrations:
-    bug_tracking:
-      _TYPE: bool
-      _TOOLTIP: Asana, BaseCamp, Clubhouse, Codebase, Github, Gitlab, Teamwork, Trello, Sprintly, Pivotal, Manuscript
-    advanced_bug_tracking:
-      _TYPE: bool
-      _TOOLTIP: Jira connect, Jira, OpsGenie
-    premium_bug_tracking:
-      _TYPE: bool
-      _TOOLTIP: Jira server, PhabricatorApp
-    notifications:
-      _TYPE: bool
-      _TOOLTIP: Chatwork, Slack, Hipchat
-    crm:
-      _TYPE: bool
-      _TOOLTIP: Desk, Freshdesk, Zendesk, Jira service desk, Frontapp
-    webhook:
-      _TYPE: bool
-      _TOOLTIP: Webhooks, Zapier
     free_integrations:
       _TYPE: bool
-      _TOOLTIP: Slack
-      _HIDDEN: true
     paid_integrations:
       _TYPE: bool
-      _TOOLTIP: Asana, BaseCamp, Clubhouse, codebase, Github, Gitlab, teamwork, Trello, Sprintly, Pivotal, manuscript, Zapier, Zendesk, Jira, Connect, ... etc
-      _HIDDEN: true
     premium_integrations:
       _TYPE: bool
-      _TOOLTIP: OpsGenie, Phabricator, Jira Server
-      _HIDDEN: true
   conversations:
     in_app:
       _TYPE: bool

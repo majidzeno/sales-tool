@@ -264,13 +264,13 @@ class OptionsPage extends Component {
 
 							<InputGroup className='mb-1'>
 								<InputGroup.Text>
-									<label htmlFor='jira_ticket'>Jira Ticket: </label>
+									<label htmlFor='jira_ticket'>References: </label>
 								</InputGroup.Text>
 								<FormControl
 									value={values.jira_ticket}
 									onChange={(e) => this.onJiraTicketChange(e.target.value)}
 									id='jira_ticket'
-									placeholder='jira_ticket'
+									placeholder='i.e. jira_ticket'
 									className='stretched-input'
 								/>
 							</InputGroup>

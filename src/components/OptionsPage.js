@@ -74,28 +74,33 @@ class OptionsPage extends Component {
 			});
 	}
 
+	componentDidUpdate(_, prevState) {
+		if (prevState.dash10 !== this.state.dash10) {
+			if (this.state.dash10) {
+				this.setState({
+					formLayout: this.state.dash10Data.configs,
+					warns: this.state.dash10Data.warns,
+					formState: this.initialState(this.state.dash10Data.configs),
+				});
+			} else {
+				this.setState({
+					formLayout: this.state.legacyData.configs,
+					warns: this.state.legacyData.warns,
+					formState: this.initialState(this.state.legacyData.configs),
+				});
+			}
+		}
+	}
+
 	onChange = (changes) => {
 		this.setState(({ formState }) => ({
 			formState: mergeDeep(formState, changes),
 		}));
 	};
 
-	togglePlan = () => {
+	togglePlan = (input) => {
 		this.clearAll();
-		this.setState({ dash10: !this.state.dash10 });
-		if (this.state.dash10) {
-			this.setState({
-				formLayout: this.state.dash10Data.configs,
-				warns: this.state.dash10Data.warns,
-				formState: this.initialState(this.state.dash10Data.configs),
-			});
-		} else {
-			this.setState({
-				formLayout: this.state.legacyData.configs,
-				warns: this.state.legacyData.warns,
-				formState: this.initialState(this.state.legacyData.configs),
-			});
-		}
+		this.setState({ dash10: input.target.checked });
 	};
 
 	onCompanyIdChange = (value) => {
@@ -230,82 +235,84 @@ class OptionsPage extends Component {
 					label={this.state.dash10 ? 'Dash10' : 'Legacy'}
 				/>
 
-				<Row className='full'>
-					<Col className='col-left'>
-						<OptionsList
-							className='MainList'
-							title='Overrides'
-							layout={this.state.formLayout}
-							state={this.state.formState}
-							onChange={this.onChange}
-						/>
-					</Col>
-					<Col className='col-right'>
-						<Messages msgs={high_msgs} />
-
-						<InputGroup className='mb-1'>
-							<InputGroup.Text>
-								<label htmlFor='company_id'>Company Id: </label>
-							</InputGroup.Text>
-							<FormControl
-								value={values.company_id}
-								onChange={(e) => this.onCompanyIdChange(e.target.value)}
-								id='company_id'
-								placeholder='company_id'
-								className='stretched-input'
+				{this.state.formLayout && (
+					<Row className='full'>
+						<Col className='col-left'>
+							<OptionsList
+								className='MainList'
+								title='Overrides'
+								layout={this.state.formLayout}
+								state={this.state.formState}
+								onChange={this.onChange}
 							/>
-						</InputGroup>
+						</Col>
+						<Col className='col-right'>
+							<Messages msgs={high_msgs} />
 
-						<InputGroup className='mb-1'>
-							<InputGroup.Text>
-								<label htmlFor='jira_ticket'>Jira Ticket: </label>
-							</InputGroup.Text>
-							<FormControl
-								value={values.jira_ticket}
-								onChange={(e) => this.onJiraTicketChange(e.target.value)}
-								id='jira_ticket'
-								placeholder='jira_ticket'
-								className='stretched-input'
-							/>
-						</InputGroup>
+							<InputGroup className='mb-1'>
+								<InputGroup.Text>
+									<label htmlFor='company_id'>Company Id: </label>
+								</InputGroup.Text>
+								<FormControl
+									value={values.company_id}
+									onChange={(e) => this.onCompanyIdChange(e.target.value)}
+									id='company_id'
+									placeholder='company_id'
+									className='stretched-input'
+								/>
+							</InputGroup>
 
-						<div className='d-grid gap-2'>
-							<Button
-								size='lg'
-								variant='primary'
-								onClick={this.generateCommand}>
-								Generate Command
-							</Button>
-						</div>
-						<Messages msgs={msgs} />
-						<br />
-						{commandCode ? (
+							<InputGroup className='mb-1'>
+								<InputGroup.Text>
+									<label htmlFor='jira_ticket'>Jira Ticket: </label>
+								</InputGroup.Text>
+								<FormControl
+									value={values.jira_ticket}
+									onChange={(e) => this.onJiraTicketChange(e.target.value)}
+									id='jira_ticket'
+									placeholder='jira_ticket'
+									className='stretched-input'
+								/>
+							</InputGroup>
+
 							<div className='d-grid gap-2'>
 								<Button
 									size='lg'
-									variant={
-										this.state.copyText === 'Copy Command'
-											? 'primary'
-											: 'success'
-									}
-									onClick={() => this.handleCopy(commandCode)}>
-									{this.state.copyText}
+									variant='primary'
+									onClick={this.generateCommand}>
+									Generate Command
 								</Button>
 							</div>
-						) : null}
-						<br />
-						<div>
-							<Button size='sm' variant='secondary' onClick={this.clearAll}>
-								Clear All
-							</Button>
-						</div>
-						{/*
+							<Messages msgs={msgs} />
+							<br />
+							{commandCode ? (
+								<div className='d-grid gap-2'>
+									<Button
+										size='lg'
+										variant={
+											this.state.copyText === 'Copy Command'
+												? 'primary'
+												: 'success'
+										}
+										onClick={() => this.handleCopy(commandCode)}>
+										{this.state.copyText}
+									</Button>
+								</div>
+							) : null}
+							<br />
+							<div>
+								<Button size='sm' variant='secondary' onClick={this.clearAll}>
+									Clear All
+								</Button>
+							</div>
+							{/*
               <div className="d-grid gap-2">
                 <Button size="sm" variant="warning" onClick={this.removeOverrides}>Remove all overrides</Button>
               </div>
               */}
-					</Col>
-				</Row>
+						</Col>
+					</Row>
+				)}
 			</Container>
 		);
 	}

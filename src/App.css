@@ -35,6 +35,15 @@ body {
   -ms-user-select: none;      /* IE 10+ */
   user-select: none;
 }
+.form-check-label {
+  margin-left: 20px;
+}
+
+.form-check.form-switch {
+  margin: 10px;
+  margin-bottom: 30px;
+}
+
 .form-check-input[type=checkbox]:indeterminate {
   background-color: #fff;
   border-color: rgb(0,0,0,0.25);

@@ -14,15 +14,25 @@ configs:
       _TOOLTIP: Max number of members per plan
   limits:
     sessions:
-      _TYPE: int
+      current_bucket:
+        limit:
+          _TYPE: int
     bugs:
-      _TYPE: int
+      current_bucket:
+        limit:
+          _TYPE: int
     crashes_occurrences:
-      _TYPE: int
+      current_bucket:
+        limit:
+          _TYPE: int
     surveys_responses:
-      _TYPE: int
+      current_bucket:
+        limit:
+          _TYPE: int
     apm:
-      _TYPE: int
+      current_bucket:
+        limit:
+          _TYPE: int
   insights:
     _TYPE: bool
   multiple_attachments:

@@ -12,11 +12,6 @@ configs:
     team_upper_limit:
       _TYPE: int
       _TOOLTIP: Max number of members per plan
-    interval:
-      _TYPE: array
-      _OPTIONS:
-        - monthly
-        - annual
   limits:
     sessions:
       _TYPE: int

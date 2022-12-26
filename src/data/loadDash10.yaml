@@ -21,6 +21,8 @@ configs:
       _TYPE: int
     surveys_responses:
       _TYPE: int
+    apm:
+      _TYPE: int
   insights:
     _TYPE: bool
   multiple_attachments:

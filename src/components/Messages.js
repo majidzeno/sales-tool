@@ -13,7 +13,7 @@ const Messages = ({ msgs }) => {
 							<Form.Control
 								className='output-area'
 								as='textarea'
-                key={i}
+								key={i}
 								value={msg.content}
 								readOnly
 							/>
@@ -29,7 +29,11 @@ const Messages = ({ msgs }) => {
 
 const renderMsg = (msg, i) =>
 	Array.isArray(msg.content) ? (
-		msg.content.map((c, i) => <p className='msg-p' key={i}>{c}</p>)
+		msg.content.map((c, i) => (
+			<p className='msg-p' key={i}>
+				{c}
+			</p>
+		))
 	) : (
 		<p className='msg-p' key={i}>
 			{msg.content}

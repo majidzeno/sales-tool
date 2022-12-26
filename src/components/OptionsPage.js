@@ -1,6 +1,8 @@
+/** @format */
+
 import { Component } from 'react';
-import yamldata from '../data/load.yaml';
-import yamldataDash10 from '../data/loadDash10.yaml';
+import yamlDataLegacy from '../data/loadLegacy.yaml';
+import yamlDataDash10 from '../data/loadDash10.yaml';
 import YAML from '../helpers/yaml-0.4';
 import OptionsList from './OptionsList';
 import Messages from './Messages';
@@ -19,14 +21,15 @@ import {
 	FormControl,
 	Form,
 } from 'react-bootstrap';
+
 class OptionsPage extends Component {
 	state = {
 		dash10: false,
-		layoutD10: {},
-		layoutLegacy: {},
 		warns: {},
-		stateD10: {},
-		stateLegacy: {},
+		formLayout: {},
+		formState: {},
+		legacyData: {},
+		dash10Data: {},
 		msgs: [],
 		high_msgs: [],
 		copyText: 'Copy Command',
@@ -47,36 +50,52 @@ class OptionsPage extends Component {
 	}
 
 	componentDidMount() {
-			fetch(yamldata)
-				.then((r) => r.text())
-				.then((r) => {
-					const { configs, warns } = YAML.parse(r);
-					this.setState({
-						layoutLegacy: configs,
-						warns,
-						stateLegacy: this.initialState(configs),
-					});
+		fetch(yamlDataLegacy)
+			.then((r) => r.text())
+			.then((r) => {
+				const { configs, warns } = YAML.parse(r);
+				this.setState({
+					legacyData: { configs, warns },
 				});
-	
-			fetch(yamldataDash10)
-				.then((r) => r.text())
-				.then((r) => {
-					const { configs, warns } = YAML.parse(r);
-					this.setState({
-						layoutD10: configs,
-						warns,
-						stateD10: this.initialState(configs),
-					});
+				this.setState({
+					formLayout: configs,
+					warns,
+					formState: this.initialState(configs),
 				});
+			});
+
+		fetch(yamlDataDash10)
+			.then((r) => r.text())
+			.then((r) => {
+				const { configs, warns } = YAML.parse(r);
+				this.setState({
+					dash10Data: { configs, warns },
+				});
+			});
 	}
 
 	onChange = (changes) => {
-		this.setState(({ state }) => ({ state: mergeDeep(state, changes) }));
+		this.setState(({ formState }) => ({
+			formState: mergeDeep(formState, changes),
+		}));
 	};
 
 	togglePlan = () => {
-		console.log('this.state.Dash10', this.state.dash10);
+		this.clearAll();
 		this.setState({ dash10: !this.state.dash10 });
+		if (this.state.dash10) {
+			this.setState({
+				formLayout: this.state.dash10Data.configs,
+				warns: this.state.dash10Data.warns,
+				formState: this.initialState(this.state.dash10Data.configs),
+			});
+		} else {
+			this.setState({
+				formLayout: this.state.legacyData.configs,
+				warns: this.state.legacyData.warns,
+				formState: this.initialState(this.state.legacyData.configs),
+			});
+		}
 	};
 
 	onCompanyIdChange = (value) => {
@@ -94,10 +113,10 @@ class OptionsPage extends Component {
 	};
 
 	clearAll = () => {
-		this.setState(({ layout }) => ({
+		this.setState(({ formLayout }) => ({
 			msgs: [],
 			high_msgs: [],
-			state: this.initialState(layout),
+			state: this.initialState(formLayout),
 			values: {
 				company_id: '',
 				jira_ticket: '',
@@ -105,16 +124,8 @@ class OptionsPage extends Component {
 		}));
 	};
 
-	removeOverrides = () => {
-		this.setState(({ layout }) => ({
-			msgs: [],
-			high_msgs: [],
-			state: this.initialState(layout, false),
-		}));
-	};
-
 	generateCommand = () => {
-		const obj = removeUndefined(this.state.state);
+		const obj = removeUndefined(this.state.formState);
 		const { group_warns, usage_warns } = this.state.warns;
 		let high_msgs = [];
 		this.setState({ copyText: 'Copy Command' });
@@ -209,10 +220,8 @@ class OptionsPage extends Component {
 	};
 
 	render() {
-		const { layout, state, high_msgs, msgs, values } = this.state;
+		const { high_msgs, msgs, values } = this.state;
 		const commandCode = msgs[1]?.content;
-    console.log('layout', layout);
-    console.log('state', state);
 		return (
 			<Container className='full' fluid='sm'>
 				<Form.Switch
@@ -226,8 +235,8 @@ class OptionsPage extends Component {
 						<OptionsList
 							className='MainList'
 							title='Overrides'
-							layout={this.state.dash10 ? this.state.layoutD10 : this.state.layoutLegacy }
-							state= {this.state.dash10 ? this.state.stateD10 : this.state.stateLegacy }
+							layout={this.state.formLayout}
+							state={this.state.formState}
 							onChange={this.onChange}
 						/>
 					</Col>

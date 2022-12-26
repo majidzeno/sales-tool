@@ -74,9 +74,6 @@ configs:
       _TYPE: bool
   feature_requests:
     _TYPE: bool
-  analytics:
-    issues:
-      _TYPE: bool
   logs:
     console:
       _TYPE: bool
@@ -112,6 +109,9 @@ configs:
       _TYPE: bool
   sso:
     _TYPE: bool
+  analytics:
+    users:
+      _TYPE: bool
   apm:
     _TYPE: bool
 

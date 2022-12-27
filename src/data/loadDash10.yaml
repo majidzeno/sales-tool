@@ -21,7 +21,7 @@ configs:
       current_bucket:
         limit:
           _TYPE: int
-    crashes_occurrences:
+    crashes:
       current_bucket:
         limit:
           _TYPE: int
@@ -98,10 +98,13 @@ configs:
   integrations:
     free_integrations:
       _TYPE: bool
+      _TOOLTIP: slack
     paid_integrations:
       _TYPE: bool
+      _TOOLTIP: Asana, Basecamp, Clubhouse, Codebase, github, gitlab, manuscript , pivotal, sprintly, teamwork, trello , desk, freshdesk, frontapp, jira service desk, zendesk , webhook, zapier, chatwork, hipchat, Jira cloud, clickup, ms_teams
     premium_integrations:
       _TYPE: bool
+      _TOOLTIP: jira server, phabricator, opsgenie , servicenow
   conversations:
     in_app:
       _TYPE: bool

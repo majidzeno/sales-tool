@@ -54,6 +54,12 @@ configs:
     sessions:
       _TYPE: int
       _UNIT: days
+    chats:
+      _TYPE: int
+      _UNIT: days
+    users:
+      _TYPE: int
+      _UNIT: days        
   white_labeling:
     _TYPE: bool
   report_categories:

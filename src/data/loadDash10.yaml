@@ -1,0 +1,134 @@
+configs:
+  info:
+    apps:
+      _TYPE: int
+      _TOOLTIP: Number of applications per plan
+    apps_upper_limit:
+      _TYPE: int
+      _TOOLTIP: Max number of applications per plan
+    team:
+      _TYPE: int
+      _TOOLTIP: Number of team members per plan
+    team_upper_limit:
+      _TYPE: int
+      _TOOLTIP: Max number of members per plan
+  limits:
+    sessions:
+      current_bucket:
+        limit:
+          _TYPE: int
+    bugs:
+      current_bucket:
+        limit:
+          _TYPE: int
+    crashes:
+      current_bucket:
+        limit:
+          _TYPE: int
+    surveys_responses:
+      current_bucket:
+        limit:
+          _TYPE: int
+    apm:
+      current_bucket:
+        limit:
+          _TYPE: int
+  insights:
+    _TYPE: bool
+  multiple_attachments:
+    _TYPE: bool
+  crash_reporting:
+    _TYPE: bool
+  rules:
+    _TYPE: bool
+  data_retention:
+    bugs:
+      _TYPE: int
+      _UNIT: days
+    crashes:
+      _TYPE: int
+      _UNIT: days
+    apm:
+      _TYPE: int
+      _UNIT: days
+    sessions:
+      _TYPE: int
+      _UNIT: days
+    chats:
+      _TYPE: int
+      _UNIT: days
+    users:
+      _TYPE: int
+      _UNIT: days        
+  white_labeling:
+    _TYPE: bool
+  report_categories:
+    _TYPE: bool
+  surveys:
+    basic:
+      _TYPE: bool
+    nps:
+      _TYPE: bool
+    app_store:
+      _TYPE: bool
+  announcements:
+    basic:
+      _TYPE: bool
+    whats_new:
+      _TYPE: bool
+    version_update:
+      _TYPE: bool
+  feature_requests:
+    _TYPE: bool
+  logs:
+    console:
+      _TYPE: bool
+      _TOOLTIP: Console logs
+    ibg:
+      _TYPE: bool
+      _TOOLTIP: Instabug logs
+    user_data:
+      _TYPE: bool
+    network_log:
+      _TYPE: bool
+    view_hierarchy:
+      _TYPE: bool
+    user_events:
+      _TYPE: bool
+    user_steps:
+      _TYPE: bool
+    repro_steps:
+      _TYPE: bool
+    sessions_profiler:
+      _TYPE: bool
+  integrations:
+    free_integrations:
+      _TYPE: bool
+      _TOOLTIP: slack
+    paid_integrations:
+      _TYPE: bool
+      _TOOLTIP: Asana, Basecamp, Clubhouse, Codebase, github, gitlab, manuscript , pivotal, sprintly, teamwork, trello , desk, freshdesk, frontapp, jira service desk, zendesk , webhook, zapier, chatwork, hipchat, Jira cloud, clickup, ms_teams
+    premium_integrations:
+      _TYPE: bool
+      _TOOLTIP: jira server, phabricator, opsgenie , servicenow
+  conversations:
+    in_app:
+      _TYPE: bool
+    email:
+      _TYPE: bool
+  sso:
+    _TYPE: bool
+  analytics:
+    users:
+      _TYPE: bool
+  apm:
+    _TYPE: bool
+
+warns:
+  group_warns:
+    - [info.apps, info.apps_upper_limit]
+    - [info.team, info.team_upper_limit]
+    - [surveys.basic, surveys.nps, surveys.app_store, announcements.basic, announcements.whats_new, announcements.version_update]
+  usage_warns:
+    - _OPTIONS: [integrations.free_integrations, integrations.paid_integrations, integrations.premium_integrations]
+      _MESSAGE: "The free/paid/premium options should only be used for plans after iteration 10."

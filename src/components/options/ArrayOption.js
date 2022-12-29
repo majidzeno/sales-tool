@@ -5,7 +5,6 @@ import { NO_CHANGE_PLACEHOLDER } from '../../helpers/helpers'
 const ArrayOption = (props) => {
 
   const { label, value, state, onChange } = props
-
   return <Option tooltip={value._TOOLTIP} label={label} unit={value._UNIT} {...props}>
     <Form.Select disabled={!state._ENABLED} id={label}
       value={state._VALUE === undefined ? NO_CHANGE_PLACEHOLDER : state._VALUE}
